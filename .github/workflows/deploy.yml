@@ -1,0 +1,21 @@
+name: Deploy to PythonAnywhere
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Upload via API to PythonAnywhere
+        env:
+          USERNAME: WijdanALqarni
+          API_TOKEN: ${{ secrets.PA_TOKEN }}
+        run: |
+          curl -X POST "https://www.pythonanywhere.com/api/v0/user/$USERNAME/files/path/home/$USERNAME/main.py" \
+            -H "Authorization: Token $API_TOKEN" \
+            --data-binary @main.py
